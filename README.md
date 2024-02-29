@@ -4,7 +4,21 @@
 * It uses Docker to simplify deployment and environment setup. 
 * Follow the instructions below to get started.
 
-# Setup and Running
+# Setup by venv
+
+```bash
+git clone https://github.com/Elmo-Lin/license_plate_recognition.git
+```
+```bash
+.\test\Scripts\activate
+```
+```bash
+pip install Flask opencv-python-headless pytesseract
+```
+```bash
+python app.py
+```
+# Setup by docker
 
 ```bash
 git clone https://github.com/Elmo-Lin/license_plate_recognition.git
