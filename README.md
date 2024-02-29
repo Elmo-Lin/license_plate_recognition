@@ -7,7 +7,7 @@
 # Setup and Running
 
 ```bash
-git clone https://github.com/yourusername/license_plate_recognition.git
+git clone https://github.com/Elmo-Lin/license_plate_recognition.git
 ```
 ```bash
 cd license_plate_recognition
