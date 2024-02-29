@@ -26,7 +26,17 @@ def upload_file():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
             plate_number = recognize_license_plate(file_path)
-            return f'The license plate number: {plate_number}'
+            name = "Unknown"
+            image_path = None  # 初始化圖片路徑為 None
+            if plate_number == "NBX-5588\n":
+                name = "A owner"
+                image_path = "static/Aowner.jpg"
+            elif plate_number == "ABC-5678\n":
+                name = "B owner"
+                image_path = "static/Bowner.jpg"
+
+            # 使用 render_template 渲染結果頁面，並傳遞車牌號碼、車主名稱和車主圖片路徑
+            return render_template('result.html', plate_number=plate_number.strip(), name=name, image_path=image_path)
     return '''
     <!doctype html>
     <title>Upload license plate</title>

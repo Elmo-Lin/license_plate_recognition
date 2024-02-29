@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>License Plate Recognition Result</title>
+</head>
+<body>
+    <h1>License Plate Recognition Result</h1>
+    <p>The license plate number: {{ plate_number }}</p>
+    <p>Car owner: {{ name }}</p>
+    {% if image_path %}
+        <img src="{{ image_path }}" alt="Car owner">
+    {% endif %}
+</body>
+</html>
