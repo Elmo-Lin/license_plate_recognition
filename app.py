@@ -16,7 +16,6 @@ recognition_times = {}
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        
         if 'file' not in request.files:
             return 'No file part'
         file = request.files['file']
@@ -29,16 +28,18 @@ def upload_file():
             file.save(file_path)
             plate_number = recognize_license_plate(file_path)
             name = "Unknown"
-            image_path = None  # 初始化圖片路徑為 None
-            last_seen = None  # Initialize last seen as None
+            image_path = None  # Initialize image path as None
+
+            current_time = datetime.now()
+            interval = "首次停車"  # Assume first time parking if not found in records
 
             if plate_number in recognition_times:
-                last_seen = recognition_times[plate_number]
-            else:
-                last_seen = "尚未停車"
-
-            # Update the recognition time for this plate number
-            recognition_times[plate_number] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                last_recognition_time = datetime.strptime(recognition_times[plate_number], "%Y-%m-%d %H:%M:%S")
+                interval_seconds = (current_time - last_recognition_time).total_seconds()
+                hours, remainder = divmod(interval_seconds, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                interval = f"{int(hours)}小時{int(minutes)}分鐘{int(seconds)}秒前"
+            recognition_times[plate_number] = current_time.strftime("%Y-%m-%d %H:%M:%S")
 
             if plate_number == "NBX-5588\n":
                 name = "A 車主"
@@ -50,8 +51,8 @@ def upload_file():
                 name = "此車為贓車"
                 image_path = "static/Cowner.jpg"
 
-            # 使用 render_template 渲染結果頁面，並傳遞車牌號碼、車主名稱和車主圖片路徑
-            return render_template('result.html', plate_number=plate_number, name=name, image_path=image_path, last_seen=last_seen)
+            # Pass interval instead of last_seen
+            return render_template('result.html', plate_number=plate_number, name=name, image_path=image_path, last_seen=interval)
     return '''
     <!doctype html>
 <html lang="zh">
@@ -110,7 +111,6 @@ def upload_file():
     </form>
 </body>
 </html>
-
     '''
 
 def recognize_license_plate(img_path):

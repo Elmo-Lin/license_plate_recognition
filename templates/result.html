@@ -45,7 +45,9 @@
         <h1>車牌辨識系統</h1>
         <p>車牌: {{ plate_number }}</p>
         <p>車主: {{ name }}</p>
-        <p>停車時間: {{ last_seen }}</p>
+        {% if image_path != "static/Cowner.jpg" %}
+            <p>停車時間: {{ last_seen }}</p>
+        {% endif %}
         {% if image_path %}
             <img src="{{ image_path }}" alt="Car owner">
         {% endif %}
